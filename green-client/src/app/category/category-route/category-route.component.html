@@ -1,0 +1,10 @@
+<mat-toolbar>{{category?.title}}</mat-toolbar>
+<mat-list>
+    <mat-list-item *ngFor="let category of childCategories">
+        <a [routerLink]="['/category', category.id]">{{ category.title }}</a>
+    </mat-list-item>
+    <mat-divider *ngIf="hasArticlesAndCategories$ | async"></mat-divider>
+    <mat-list-item *ngFor="let article of articles$ | async">
+        {{article.title}}
+    </mat-list-item>
+</mat-list>

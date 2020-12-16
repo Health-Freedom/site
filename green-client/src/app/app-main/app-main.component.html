@@ -1,11 +1,11 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container mat-typography">
   <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+      <a mat-list-item *ngFor="let category of menuCategories | async" [routerLink]="['category', category.id]">
+        {{category.title}}
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -14,8 +14,12 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>green-client</span>
+      <span>{{ siteTitle$| async }}</span>
+      <span class="toolbar-spacer"></span>
+      <button mat-button><mat-icon>home</mat-icon>Home</button>
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <div>
+      <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

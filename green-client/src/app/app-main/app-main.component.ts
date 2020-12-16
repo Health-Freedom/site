@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { SiteDataService, Category, SiteSetting } from '../site-data.service';
 
 @Component({
   selector: 'app-main',
   templateUrl: './app-main.component.html',
   styleUrls: ['./app-main.component.scss']
 })
-export class AppMainComponent {
+export class AppMainComponent implements OnInit {
+  siteTitle$!: Observable<string>;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -16,6 +18,18 @@ export class AppMainComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  menuCategories: Observable<Category[]> = this.siteDataService.getSettings()
+    .valueChanges
+    .pipe(map(value => value?.data?.setting.main_categories));
+
+  constructor(private breakpointObserver: BreakpointObserver,
+    private siteDataService: SiteDataService) {
+  }
+
+  ngOnInit(): void {
+    this.siteTitle$ = this.siteDataService.getSettings().valueChanges.pipe(
+      map(settings => settings.data?.setting?.site_title)
+    )
+  }
 
 }
