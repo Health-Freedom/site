@@ -14,6 +14,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { CategoryModule } from './category/category.module';
+import { ArticleModule } from './article/article.module';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { CategoryModule } from './category/category.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     GraphQLModule,
+    MarkdownModule.forRoot(),
     HttpClientModule,
     LayoutModule,
     MatToolbarModule,
@@ -32,7 +35,8 @@ import { CategoryModule } from './category/category.module';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    CategoryModule
+    CategoryModule,
+    ArticleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

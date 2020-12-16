@@ -5,6 +5,6 @@
     </mat-list-item>
     <mat-divider *ngIf="hasArticlesAndCategories$ | async"></mat-divider>
     <mat-list-item *ngFor="let article of articles$ | async">
-        {{article.title}}
+        <a [routerLink]="['/article', article.id]">{{article.title}}</a>
     </mat-list-item>
 </mat-list>

@@ -82,8 +82,16 @@ export class SiteDataService implements OnDestroy {
     );
   }
 
-  getArticle(id: number) {
-    //return this.apollo.watchQuery<>();
+  getArticle(id: string) {
+    return this.apollo.watchQuery<ArticleResponse>(
+      {
+        query: getArticleDetails,
+        returnPartialData: true,
+        variables: {
+          id: id
+        }
+      }
+    );
   }
 }
 
