@@ -1,6 +1,5 @@
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Apollo, gql, QueryRef } from 'apollo-angular';
-import { EmptyObject } from 'apollo-angular/types';
 import { Subscription } from 'rxjs';
 import { categoryContents, categoryContentsVariables } from 'src/grapqlTypes/categoryContents';
 import { getArticle } from 'src/grapqlTypes/getArticle';
