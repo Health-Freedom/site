@@ -66,7 +66,7 @@ query getRecentArticles {
 })
 export class SiteDataService implements OnDestroy {
 
-  private settings!: QueryRef<getSettings_setting, EmptyObject>;
+  private settings!: QueryRef<getSettings_setting>;
   private subscription!: Subscription;
   constructor(private apollo: Apollo) {
     this.settings = this.apollo.watchQuery<getSettings_setting>({
