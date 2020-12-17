@@ -4,7 +4,7 @@ import { EmptyObject } from 'apollo-angular/types';
 import { Subscription } from 'rxjs';
 
 const getMainSettings = gql`
-{
+query getSettings {
   setting {
     site_title
     main_categories {
@@ -36,7 +36,7 @@ query categoryContents($id: ID!) {
 `;
 
 const getArticleDetails = gql`
-query($id: ID!) {
+query getArticle($id: ID!) {
   article(id: $id) {
     id
     title
@@ -47,7 +47,7 @@ query($id: ID!) {
 `;
 
 const getMostRecentArticle = gql`
-{
+query getRecentArticles {
   articles(sort: "published_at", limit: 5) {
     id
     title
