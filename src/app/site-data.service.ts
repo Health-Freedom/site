@@ -2,6 +2,10 @@ import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Apollo, gql, QueryRef } from 'apollo-angular';
 import { EmptyObject } from 'apollo-angular/types';
 import { Subscription } from 'rxjs';
+import { categoryContents, categoryContentsVariables } from 'src/grapqlTypes/categoryContents';
+import { getArticle } from 'src/grapqlTypes/getArticle';
+import { getRecentArticles } from 'src/grapqlTypes/getRecentArticles';
+import { getSettings_setting } from 'src/grapqlTypes/getSettings';
 
 const getMainSettings = gql`
 query getSettings {
@@ -62,10 +66,10 @@ query getRecentArticles {
 })
 export class SiteDataService implements OnDestroy {
 
-  private settings!: QueryRef<SettingResponse, EmptyObject>;
+  private settings!: QueryRef<getSettings_setting, EmptyObject>;
   private subscription!: Subscription;
   constructor(private apollo: Apollo) {
-    this.settings = this.apollo.watchQuery<SettingResponse>({
+    this.settings = this.apollo.watchQuery<getSettings_setting>({
       query: getMainSettings
     });
 
@@ -82,7 +86,7 @@ export class SiteDataService implements OnDestroy {
   }
 
   getCategoryDetails(id: string) {
-    return this.apollo.watchQuery<CategoryDetailsResponse, IdArgument>(
+    return this.apollo.watchQuery<categoryContents, categoryContentsVariables>(
       {
         query: getCategoryDetails,
         variables: {
@@ -93,7 +97,7 @@ export class SiteDataService implements OnDestroy {
   }
 
   getArticle(id: string) {
-    return this.apollo.watchQuery<ArticleResponse>(
+    return this.apollo.watchQuery<getArticle>(
       {
         query: getArticleDetails,
         returnPartialData: true,
@@ -105,58 +109,8 @@ export class SiteDataService implements OnDestroy {
   }
 
   getMostRecentArticles() {
-    return this.apollo.watchQuery<ArticlesResponse>({
-        query: getMostRecentArticle
-      });
+    return this.apollo.watchQuery<getRecentArticles>({
+      query: getMostRecentArticle
+    });
   }
-}
-
-export type SettingResponse = {
-  setting: SiteSetting;
-}
-
-export type SiteSetting = {
-  main_categories: Category[];
-  site_title: string;
-}
-
-export type CategoryReponse = {
-  categories: Category[];
-}
-
-export type Category = {
-  id: string;
-  title: string;
-}
-
-export type CategoryDetailsResponse = {
-  category: CategoryDetails;
-}
-
-export type CategoryDetails = {
-  id: string;
-  title: string;
-  description: string;
-  articles: Article[];
-  children: Category[];
-}
-
-export type ArticlesResponse = {
-  articles: Article[];
-}
-
-export type ArticleResponse = {
-  article: Article;
-}
-
-export type Article = {
-  id: string;
-  title: string;
-  summary?: string;
-  body?: string;
-  created_at: Date;
-}
-
-export type IdArgument = {
-  id: string;
 }
