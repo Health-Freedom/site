@@ -1,4 +1,7 @@
-<mat-toolbar>{{ article?.title }}</mat-toolbar>
-<article class="mat-body site-article">
-    <markdown [data]="article?.body"></markdown>
-</article>
+<mat-toolbar *ngIf="is404 else content">Error: Requested article doesn't exist.</mat-toolbar>
+<ng-template #content>
+    <mat-toolbar>{{ article?.title }}</mat-toolbar>
+    <article class="mat-body site-article">
+        <markdown [data]="article?.body"></markdown>
+    </article>
+</ng-template>

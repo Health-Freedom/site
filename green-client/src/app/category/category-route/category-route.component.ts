@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { map, switchMap } from 'rxjs/operators';
+import { ActivatedRoute, } from '@angular/router';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { Article, Category, CategoryDetails, SiteDataService } from 'src/app/site-data.service';
 import { Observable } from 'rxjs';
 
@@ -15,6 +15,7 @@ export class CategoryRouteComponent implements OnInit {
   hasArticlesAndCategories$!: Observable<boolean>;
   childCategories!: Category[];
   category?: CategoryDetails;
+  is404 = false;
 
   constructor(private route: ActivatedRoute,
     private siteDataService: SiteDataService) { }
@@ -24,7 +25,15 @@ export class CategoryRouteComponent implements OnInit {
       switchMap(params =>
         this.siteDataService.getCategoryDetails(params.get('id')!).valueChanges
       ),
+      tap(response => {
+        if (!response.loading && !response.data?.category) {
+          this.is404 = true;
+        } else {
+          this.is404 = false;
+        }
+      }),
       map(response => response.data.category),
+      filter(response => !!response)
     );
 
     category$.subscribe(category => {
