@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { categoryContents, categoryContentsVariables } from 'src/grapqlTypes/categoryContents';
 import { getArticle } from 'src/grapqlTypes/getArticle';
 import { getRecentArticles } from 'src/grapqlTypes/getRecentArticles';
-import { getSettings_setting } from 'src/grapqlTypes/getSettings';
+import { getSettings, getSettings_setting } from 'src/grapqlTypes/getSettings';
 
 const getMainSettings = gql`
 query getSettings {
@@ -65,10 +65,10 @@ query getRecentArticles {
 })
 export class SiteDataService implements OnDestroy {
 
-  private settings!: QueryRef<getSettings_setting>;
+  private settings!: QueryRef<getSettings>;
   private subscription!: Subscription;
   constructor(private apollo: Apollo) {
-    this.settings = this.apollo.watchQuery<getSettings_setting>({
+    this.settings = this.apollo.watchQuery<getSettings>({
       query: getMainSettings
     });
 

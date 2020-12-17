@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, } from '@angular/router';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
-import { Article, Category, CategoryDetails, SiteDataService } from 'src/app/site-data.service';
+import { SiteDataService } from 'src/app/site-data.service';
 import { Observable } from 'rxjs';
+import { categoryContents_category, categoryContents_category_articles, categoryContents_category_children } from 'src/grapqlTypes/categoryContents';
 
 @Component({
   selector: 'app-category-route',
@@ -11,10 +12,10 @@ import { Observable } from 'rxjs';
 })
 export class CategoryRouteComponent implements OnInit {
 
-  articles$!: Observable<Article[]>;
+  articles$: Observable<(categoryContents_category_articles|null)[]|null>|null= null;
   hasArticlesAndCategories$!: Observable<boolean>;
-  childCategories!: Category[];
-  category?: CategoryDetails;
+  childCategories: (categoryContents_category_children|null)[]|null = null;
+  category: categoryContents_category | null = null;
   is404 = false;
 
   constructor(private route: ActivatedRoute,
@@ -38,15 +39,15 @@ export class CategoryRouteComponent implements OnInit {
 
     category$.subscribe(category => {
       this.category = category;
-      this.childCategories = category.children;
+      this.childCategories = category?.children ?? null
     });
 
     this.articles$ = category$.pipe(
-      map(category => category.articles)
+      map(category => category?.articles ?? null)
     );
 
     this.hasArticlesAndCategories$ = category$.pipe(
-      map(category => !!(category.articles?.length && category.children?.length))
+      map(category => !!(category?.articles?.length && category.children?.length))
     );
   }
 

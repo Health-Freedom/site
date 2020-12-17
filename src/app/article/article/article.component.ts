@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { responsePathAsArray } from 'graphql';
 import { Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
-import { Article, SiteDataService } from 'src/app/site-data.service';
+import { SiteDataService } from 'src/app/site-data.service';
+import { getArticle_article } from 'src/grapqlTypes/getArticle';
 
 @Component({
   selector: 'app-article',
@@ -13,7 +13,7 @@ import { Article, SiteDataService } from 'src/app/site-data.service';
 })
 export class ArticleComponent implements OnInit, OnDestroy {
 
-  article?: Article;
+  article?: getArticle_article|null;
   subscription!: Subscription;
   is404 = false;
 

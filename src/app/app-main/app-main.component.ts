@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, Subscription } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { SiteDataService, Category, SiteSetting } from '../site-data.service';
+import { SiteDataService, } from '../site-data.service';
+import { categoryContents_category_children } from 'src/grapqlTypes/categoryContents';
 
 @Component({
   selector: 'app-main',
@@ -10,7 +11,7 @@ import { SiteDataService, Category, SiteSetting } from '../site-data.service';
   styleUrls: ['./app-main.component.scss']
 })
 export class AppMainComponent implements OnInit {
-  siteTitle$!: Observable<string>;
+  siteTitle$!: Observable<string|null>;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -18,9 +19,9 @@ export class AppMainComponent implements OnInit {
       shareReplay()
     );
 
-  menuCategories: Observable<Category[]> = this.siteDataService.getSettings()
+  menuCategories = this.siteDataService.getSettings()
     .valueChanges
-    .pipe(map(value => value?.data?.setting.main_categories));
+    .pipe(map(value => value?.data?.setting?.main_categories));
 
   constructor(private breakpointObserver: BreakpointObserver,
     private siteDataService: SiteDataService) {
@@ -28,7 +29,7 @@ export class AppMainComponent implements OnInit {
 
   ngOnInit(): void {
     this.siteTitle$ = this.siteDataService.getSettings().valueChanges.pipe(
-      map(settings => settings.data?.setting?.site_title)
+      map(settings => settings.data?.setting?.site_title ?? null)
     )
   }
 

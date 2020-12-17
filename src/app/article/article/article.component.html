@@ -2,6 +2,6 @@
 <ng-template #content>
     <mat-toolbar>{{ article?.title }}</mat-toolbar>
     <article class="mat-body site-article">
-        <markdown [data]="article?.body"></markdown>
+        <markdown [data]="article?.body || undefined"></markdown>
     </article>
 </ng-template>

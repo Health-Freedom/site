@@ -2,8 +2,8 @@
 <mat-list>
     <mat-list-item *ngFor="let article of mostRecentArtices$ | async">
         <div>
-            <span>{{ article.created_at | date }}: </span>
-            <a [routerLink]="['/article', article.id]">{{ article.title }}</a>
+            <span>{{ article?.created_at | date }}: </span>
+            <a [routerLink]="['/article', article?.id]">{{ article?.title }}</a>
         </div>
-    </mat-list-item>
+    </mat-list-item> 
 </mat-list>
