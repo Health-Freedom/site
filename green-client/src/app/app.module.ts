@@ -16,15 +16,17 @@ import { MatListModule } from '@angular/material/list';
 import { CategoryModule } from './category/category.module';
 import { ArticleModule } from './article/article.module';
 import { MarkdownModule } from 'ngx-markdown';
+import { InvalidRouteComponent } from './invalid-route/invalid-route.component';
+import { HomePageModule } from './home-page/home-page.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AppMainComponent
+    AppMainComponent,
+    InvalidRouteComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     GraphQLModule,
     MarkdownModule.forRoot(),
@@ -36,7 +38,9 @@ import { MarkdownModule } from 'ngx-markdown';
     MatIconModule,
     MatListModule,
     CategoryModule,
-    ArticleModule
+    ArticleModule,
+    HomePageModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

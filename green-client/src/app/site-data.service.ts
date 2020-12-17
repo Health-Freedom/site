@@ -46,6 +46,16 @@ query($id: ID!) {
 }
 `;
 
+const getMostRecentArticle = gql`
+{
+  articles(sort: "published_at", limit: 5) {
+    id
+    title
+    summary
+    created_at
+  }
+}
+`;
 
 @Injectable({
   providedIn: 'root'
@@ -93,6 +103,12 @@ export class SiteDataService implements OnDestroy {
       }
     );
   }
+
+  getMostRecentArticles() {
+    return this.apollo.watchQuery<ArticlesResponse>({
+        query: getMostRecentArticle
+      });
+  }
 }
 
 export type SettingResponse = {
@@ -125,6 +141,10 @@ export type CategoryDetails = {
   children: Category[];
 }
 
+export type ArticlesResponse = {
+  articles: Article[];
+}
+
 export type ArticleResponse = {
   article: Article;
 }
@@ -134,6 +154,7 @@ export type Article = {
   title: string;
   summary?: string;
   body?: string;
+  created_at: Date;
 }
 
 export type IdArgument = {
