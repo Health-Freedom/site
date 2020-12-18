@@ -32,5 +32,5 @@ export class AppMainComponent implements OnInit {
       map(settings => settings.data?.setting?.site_title ?? null)
     )
   }
-
+ 
 }

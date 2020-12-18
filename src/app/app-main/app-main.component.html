@@ -3,12 +3,13 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-action-list *ngIf="isHandset$ | async;">
-      <button mat-list-item routerLink="/">
+      <button mat-list-item routerLink="/" (click)="drawer.close()">
         <mat-icon>home</mat-icon>Home
       </button>
     </mat-action-list>
     <mat-nav-list *ngIf="menuCategories">
-      <a mat-list-item *ngFor="let category of menuCategories | async" [routerLink]="['category', category?.id]">
+      <a mat-list-item *ngFor="let category of menuCategories | async" [routerLink]="['category', category?.id]"
+        (click)="drawer.mode == 'over' && drawer.close()">
         {{category?.title}}
       </a>
     </mat-nav-list>
