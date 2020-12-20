@@ -24,7 +24,7 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 
 	sessionID, err := createCheckoutSession(amount)
 
-	if sessionID == "" || err != nil {
+	if err != nil {
 		return &events.APIGatewayProxyResponse{
 			StatusCode:      300,
 			Headers:         map[string]string{"Content-Type": "text/plain"},
