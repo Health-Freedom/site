@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"strconv"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -32,10 +33,12 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 		}, nil
 	}
 
+	json, _ := json.Marshal(sessionID)
+
 	return &events.APIGatewayProxyResponse{
 		StatusCode:      200,
 		Headers:         map[string]string{"Content-Type": "text/plain"},
-		Body:            sessionID,
+		Body:            string(json),
 		IsBase64Encoded: false,
 	}, nil
 }
@@ -47,7 +50,7 @@ func main() {
 	lambda.Start(handler)
 }
 
-func createCheckoutSession(amount float64) (string, error) {
+func createCheckoutSession(amount float64) (ID, error) {
 	params := &stripe.CheckoutSessionParams{
 		PaymentMethodTypes: stripe.StringSlice([]string{
 			"card",
@@ -65,15 +68,21 @@ func createCheckoutSession(amount float64) (string, error) {
 				Quantity: stripe.Int64(1),
 			},
 		},
-		SuccessURL: stripe.String("https://example.com/success"),
-		CancelURL:  stripe.String("https://example.com/cancel"),
+		SuccessURL: stripe.String("https://www.yrtestingdomainfor.info/donate/thankyou"),
+		CancelURL:  stripe.String("https://www.yrtestingdomainfor.info/donate?cancelled=true"),
 	}
 
 	session, err := session.New(params)
 
 	if err != nil {
-		return "", err
+		return ID{}, err
 	}
 
-	return session.ID, nil
+	return ID{
+		ID: session.ID,
+	}, nil
+}
+
+type ID struct {
+	ID string `json:"id"`
 }
