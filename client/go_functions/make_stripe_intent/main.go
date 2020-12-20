@@ -22,7 +22,9 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 		}, nil
 	}
 
-	sessionID, err := createCheckoutSession(amount)
+	amountCents := amount * 100
+
+	sessionID, err := createCheckoutSession(amountCents)
 
 	if err != nil {
 		return &events.APIGatewayProxyResponse{
@@ -50,7 +52,7 @@ func main() {
 	lambda.Start(handler)
 }
 
-func createCheckoutSession(amount float64) (ID, error) {
+func createCheckoutSession(amountCents float64) (ID, error) {
 	params := &stripe.CheckoutSessionParams{
 		PaymentMethodTypes: stripe.StringSlice([]string{
 			"card",
@@ -63,7 +65,7 @@ func createCheckoutSession(amount float64) (ID, error) {
 					ProductData: &stripe.CheckoutSessionLineItemPriceDataProductDataParams{
 						Name: stripe.String("Donation"),
 					},
-					UnitAmountDecimal: &amount,
+					UnitAmountDecimal: &amountCents,
 				},
 				Quantity: stripe.Int64(1),
 			},
