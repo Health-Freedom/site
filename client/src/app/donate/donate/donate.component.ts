@@ -43,7 +43,7 @@ export class DonateComponent {
   async submit() {
     const stripe = await this.stripeScriptTag.promiseInstance();
 
-    this.httpClient.get<{ id: string }>("createcheckout", {
+    this.httpClient.get<{ id: string }>("/.netlify/functions/make_stripe", {
       params: {
         amount: this.amount.value
       }
