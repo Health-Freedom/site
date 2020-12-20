@@ -7,7 +7,7 @@
         </p>
         <div>
             <div *ngIf="errorMessage" style="color: red;" [innerHTML]="errorMessage"></div>
-            <label style="padding-right: 5px">Amount</label>
+            <label style="padding-right: 5px">Amount $</label>
             <mat-form-field>
                 <input matInput type="number" min="0" [formControl]="amount">
             </mat-form-field>
