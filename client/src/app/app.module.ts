@@ -18,6 +18,8 @@ import { ArticleModule } from './article/article.module';
 import { MarkdownModule } from 'ngx-markdown';
 import { InvalidRouteComponent } from './invalid-route/invalid-route.component';
 import { HomePageModule } from './home-page/home-page.module';
+import { DonateModule } from './donate/donate.module';
+import { StripeModule } from 'stripe-angular';
 
 @NgModule({
   declarations: [
@@ -39,8 +41,10 @@ import { HomePageModule } from './home-page/home-page.module';
     MatListModule,
     CategoryModule,
     ArticleModule,
+    DonateModule,
     HomePageModule,
     AppRoutingModule,
+    StripeModule.forRoot('pk_test_51HRMSVJQNVhbDx2atO8mcKnpZkvfxOG6OzKYFKAG6NX7IpK0yWwuObh2XJUYH2mFjLxsgfcCM5vKKezCYMyOZEu800h83ljPZ0')
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -8180,6 +8180,13 @@ strip-eof@^1.0.0:
   resolved "https://registry.yarnpkg.com/strip-eof/-/strip-eof-1.0.0.tgz#bb43ff5598a6eb05d89b59fcd129c983313606bf"
   integrity sha1-u0P/VZim6wXYm1n80SnJgzE2Br8=
 
+stripe-angular@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/stripe-angular/-/stripe-angular-1.4.2.tgz#c9473a6d29edfbf2073238239f54ead81a4ea4cd"
+  integrity sha512-TIdJsI5kOxOmaRBZbgC21GCY00bXA/TQ9YPKh0BWjZZkon9uIWdK600XcYJMsgDIDslHX8iY/uiORcczQBoXqA==
+  dependencies:
+    tslib "^2.0.0"
+
 style-loader@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-2.0.0.tgz#9669602fd4690740eaaec137799a03addbbc393c"

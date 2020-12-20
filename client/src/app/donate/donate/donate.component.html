@@ -1,1 +1,18 @@
-<p>donate works!</p>
+<mat-card>
+    <mat-card-title>Donate</mat-card-title>
+    <mat-card-content>
+        <p>
+            Thank you for donating! Enter amount here. When you're ready, click submit to make a donation on
+            Stripes secure serves.
+        </p>
+        <div>
+            <div *ngIf="errorMessage" style="color: red;" [innerHTML]="errorMessage"></div>
+            <label style="padding-right: 5px">Amount</label>
+            <mat-form-field>
+                <input matInput type="number" min="0" [formControl]="amount">
+            </mat-form-field>
+            <button mat-raised-button type="submit" style="margin-left: 10px"
+                [disabled]="amount.invalid" (click)="submit()">Submit</button>
+        </div>
+    </mat-card-content>
+</mat-card>
