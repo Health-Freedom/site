@@ -26,6 +26,7 @@
     "graphql": "^15.0.0",
     "ngx-markdown": "^11.0.1",
     "rxjs": "~6.6.0",
+    "stripe": "^8.129.0",
     "stripe-angular": "^1.4.2",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
