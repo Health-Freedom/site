@@ -10,7 +10,7 @@ import (
 )
 
 func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
-	amount, err := strconv.ParseFloat(request.QueryStringParameters["amount"])
+	amount, err := strconv.ParseFloat(request.QueryStringParameters["amount"], 64)
 
 	if amount < 1 || err != nil {
 		return &events.APIGatewayProxyResponse{
@@ -54,7 +54,7 @@ func createCheckoutSession(amount float64) (string, error) {
 		}),
 		Mode: stripe.String(string(stripe.CheckoutSessionModePayment)),
 		LineItems: []*stripe.CheckoutSessionLineItemParams{
-			&stripe.CheckoutSessionLineItemParams{
+			{
 				PriceData: &stripe.CheckoutSessionLineItemPriceDataParams{
 					Currency: stripe.String("usd"),
 					ProductData: &stripe.CheckoutSessionLineItemPriceDataProductDataParams{
