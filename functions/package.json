@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "tsdx watch",
-    "build": "rm -rf dist && yarn tsc && mkdir dist/functions && cp dist/index.js dist/functions/index.js",
+    "build": "rm -rf dist && yarn tsc && mkdir dist/functions && cp dist/index.js dist/functions/make_stripe_intent.js",
     "test": "tsdx test",
     "lint": "tsdx lint",
     "prepare": "tsdx build",
