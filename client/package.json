@@ -23,6 +23,7 @@
     "@angular/router": "~11.0.4",
     "@apollo/client": "^3.0.0",
     "apollo-angular": "^2.1.0",
+    "apollo-link-persisted-queries": "^0.2.2",
     "graphql": "^15.0.0",
     "ngx-markdown": "^11.0.1",
     "rxjs": "~6.6.0",
