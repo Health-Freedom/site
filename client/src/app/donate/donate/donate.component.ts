@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { StripeInstance, StripeScriptTag } from 'stripe-angular';
 
 @Component({
@@ -20,6 +20,8 @@ export class DonateComponent {
   });
 
   runRequestErrorMessage?: string;
+
+  loading = false;
 
   constructor(private stripeScriptTag: StripeScriptTag,
     private httpClient: HttpClient) { }
@@ -48,7 +50,9 @@ export class DonateComponent {
         amount: this.amount.value
       }
     }).pipe(
+      tap(() => this.loading = true),
       catchError(error => {
+        this.loading = false;
         let errorMessage = 'Donation failed. Please try again, or contact us for assistance';
 
         try {
@@ -61,6 +65,7 @@ export class DonateComponent {
       })
     )
       .subscribe(response => {
+        this.loading = false;
         (stripe as any).redirectToCheckout({
           sessionId: response.id
         });

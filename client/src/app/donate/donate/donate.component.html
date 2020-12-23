@@ -2,17 +2,19 @@
     <mat-card-title>Donate</mat-card-title>
     <mat-card-content>
         <p>
-            Thank you for donating! Enter amount here. When you're ready, click submit to make a donation on
+            Thank you for donating! Enter an amount and click submit to make a donation on
             Stripes secure serves.
         </p>
         <div>
-            <div *ngIf="errorMessage" style="color: red;" [innerHTML]="errorMessage"></div>
-            <label style="padding-right: 5px">Amount $</label>
+            <div  style="color: red;" [innerHTML]="runRequestErrorMessage"></div>
             <mat-form-field>
-                <input matInput type="number" min="0" [formControl]="amount">
+                <mat-label>Donation amount</mat-label>
+                <span matPrefix style="margin-right: 5px">$</span>
+                <input matInput type="number" min="0" [formControl]="amount" >
+                <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
             </mat-form-field>
             <button mat-raised-button type="submit" style="margin-left: 10px"
-                [disabled]="amount.invalid" (click)="submit()">Submit</button>
+                [disabled]="amount.invalid || loading" (click)="submit()">Submit</button>
         </div>
     </mat-card-content>
 </mat-card>
