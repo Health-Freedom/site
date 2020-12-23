@@ -44,13 +44,13 @@ export class DonateComponent {
 
   async submit() {
     const stripe = await this.stripeScriptTag.promiseInstance();
-
+    this.loading = true;
+    
     this.httpClient.get<{ id: string }>("/.netlify/functions/make_stripe", {
       params: {
         amount: this.amount.value
       }
     }).pipe(
-      tap(() => this.loading = true),
       catchError(error => {
         this.loading = false;
         let errorMessage = 'Donation failed. Please try again, or contact us for assistance';
@@ -65,7 +65,6 @@ export class DonateComponent {
       })
     )
       .subscribe(response => {
-        this.loading = false;
         (stripe as any).redirectToCheckout({
           sessionId: response.id
         });
