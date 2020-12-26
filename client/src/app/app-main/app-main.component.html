@@ -6,7 +6,9 @@
       <button mat-list-item routerLink="/" (click)="drawer.close()">
         <mat-icon>home</mat-icon>Home
       </button>
+      <button mat-list-item routerLink="/donate" (click)="drawer.close()">Donate</button>
     </mat-action-list>
+    <mat-divider></mat-divider>
     <mat-nav-list *ngIf="menuCategories">
       <a mat-list-item *ngFor="let category of menuCategories | async" [routerLink]="['category', category?.id]"
         (click)="drawer.mode == 'over' && drawer.close()">
@@ -23,6 +25,7 @@
       <span>{{ siteTitle$| async }}</span>
       <ng-container *ngIf="!(isHandset$ | async)">
         <span class="toolbar-spacer"></span>
+        <button mat-button routerLink="/donate">Donate</button>
         <button mat-button routerLink="/">
           <mat-icon>home</mat-icon>Home
         </button>

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { SiteDataService, } from '../site-data.service';
-import { categoryContents_category_children } from 'src/grapqlTypes/categoryContents';
 
 @Component({
   selector: 'app-main',
