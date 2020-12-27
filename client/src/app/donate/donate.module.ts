@@ -10,9 +10,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StripeModule } from 'stripe-angular';
 import { HttpClientModule } from '@angular/common/http';
+import { CancelComponent } from './cancel/cancel.component';
+import { ThankyouComponent } from './thankyou/thankyou.component';
 
 @NgModule({
-  declarations: [DonateComponent],
+  declarations: [DonateComponent, CancelComponent, ThankyouComponent],
   imports: [
     CommonModule,
     DonateRoutingModule,

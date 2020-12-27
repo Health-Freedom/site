@@ -71,7 +71,7 @@ func createCheckoutSession(amountCents float64) (ID, error) {
 			},
 		},
 		SuccessURL: stripe.String("https://www.yrtestingdomainfor.info/donate/thankyou"),
-		CancelURL:  stripe.String("https://www.yrtestingdomainfor.info/donate?cancelled=true"),
+		CancelURL:  stripe.String("https://www.yrtestingdomainfor.info/donate/cancel"),
 	}
 
 	session, err := session.New(params)
