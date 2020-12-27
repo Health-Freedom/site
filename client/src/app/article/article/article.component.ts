@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
@@ -18,7 +19,12 @@ export class ArticleComponent implements OnInit, OnDestroy {
   is404 = false;
 
   constructor(private route: ActivatedRoute,
-    private siteDataService: SiteDataService) { }
+    private siteDataService: SiteDataService,
+    private sanitizer: DomSanitizer) { }
+
+  get articleText() {
+    return this.sanitizer.bypassSecurityTrustHtml(this.article?.body ?? '');
+  }
 
   ngOnInit(): void {
     const stream$ = this.route.paramMap.pipe(
