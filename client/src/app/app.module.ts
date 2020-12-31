@@ -44,7 +44,7 @@ import { StripeModule } from 'stripe-angular';
     DonateModule,
     HomePageModule,
     AppRoutingModule,
-    StripeModule.forRoot('pk_test_51HRMSVJQNVhbDx2atO8mcKnpZkvfxOG6OzKYFKAG6NX7IpK0yWwuObh2XJUYH2mFjLxsgfcCM5vKKezCYMyOZEu800h83ljPZ0')
+    StripeModule.forRoot('')
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, first, filter } from 'rxjs/operators';
+import { SiteDataService } from 'src/app/site-data.service';
 import { StripeInstance, StripeScriptTag } from 'stripe-angular';
 
 @Component({
@@ -24,7 +25,16 @@ export class DonateComponent {
   loading = false;
 
   constructor(private stripeScriptTag: StripeScriptTag,
-    private httpClient: HttpClient) { }
+    private httpClient: HttpClient,
+    service: SiteDataService) {
+    if (!this.stripeScriptTag.StripeInstance) {
+      service.getSettings().valueChanges
+        .pipe(first(setting => !!setting?.data?.setting?.stripe_key))
+        .subscribe(result => {
+          this.stripeScriptTag.setPublishableKey(result.data.setting?.stripe_key ?? '');
+        });
+    }
+  }
 
   get errorMessage(): string {
     if (this.amount.dirty && this.amount.errors) {
@@ -45,7 +55,7 @@ export class DonateComponent {
   async submit() {
     const stripe = await this.stripeScriptTag.promiseInstance();
     this.loading = true;
-    
+
     this.httpClient.get<{ id: string }>("/.netlify/functions/make_stripe", {
       params: {
         amount: this.amount.value

@@ -16,6 +16,7 @@ export interface getSettings_setting_main_categories {
 export interface getSettings_setting {
   __typename: "Settings";
   site_title: string | null;
+  stripe_key: string | null;
   main_categories: (getSettings_setting_main_categories | null)[] | null;
 }
 

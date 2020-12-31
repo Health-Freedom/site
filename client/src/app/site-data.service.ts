@@ -10,6 +10,7 @@ const getMainSettings = gql`
 query getSettings {
   setting {
     site_title
+    stripe_key
     main_categories {
       id
       title
