@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"os"
 	"strconv"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -46,7 +47,7 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 }
 
 func main() {
-	stripe.Key = "sk_test_51HRMSVJQNVhbDx2a5JrTaKPjDx8FqlUKjtHdOJby4759RtEgrMIpByL8uZnLfKRwAZLGG4Omqo6K5qjOhZMkuWRp00679co7wP"
+	stripe.Key = os.Getenv("STRIPE_KEY")
 
 	// Make the handler available for Remote Procedure Call by AWS Lambda
 	lambda.Start(handler)
