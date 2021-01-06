@@ -13,6 +13,7 @@ export interface getArticle_article {
   title: string | null;
   summary: string | null;
   body: string | null;
+  video_source: string | null;
 }
 
 export interface getArticle {

@@ -46,6 +46,7 @@ query getArticle($id: ID!) {
     title
     summary
     body
+    video_source
   }
 }
 `;

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -20,10 +20,29 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
     private siteDataService: SiteDataService,
-    private sanitizer: DomSanitizer) { }
+    private sanitizer: DomSanitizer,
+    private renderer: Renderer2) { }
 
   get articleText() {
     return this.sanitizer.bypassSecurityTrustHtml(this.article?.body ?? '');
+  }
+
+  get videoSource() {
+    const rawSource = this.article?.video_source;
+
+    if (!rawSource) {
+      return null;
+    }
+
+    if (rawSource.toLowerCase().includes('iframe')) {
+      const newNode = this.renderer.createElement('div') as HTMLDivElement;
+      newNode.innerHTML = rawSource;
+      newNode.querySelector('iframe')?.classList.add('aspect-ratio--object');
+
+      return this.sanitizer.bypassSecurityTrustHtml(newNode.innerHTML);
+    }
+
+    return null;
   }
 
   ngOnInit(): void {
