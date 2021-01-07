@@ -20,6 +20,7 @@ import { InvalidRouteComponent } from './invalid-route/invalid-route.component';
 import { HomePageModule } from './home-page/home-page.module';
 import { DonateModule } from './donate/donate.module';
 import { StripeModule } from 'stripe-angular';
+import { ExemptionFormModule } from './exemption-form/exemption-form.module';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { StripeModule } from 'stripe-angular';
     CategoryModule,
     ArticleModule,
     DonateModule,
+    ExemptionFormModule,
     HomePageModule,
     AppRoutingModule,
     StripeModule.forRoot('')

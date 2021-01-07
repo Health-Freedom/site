@@ -1231,6 +1231,11 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/grecaptcha@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@types/grecaptcha/-/grecaptcha-3.0.1.tgz#359c46be0baeac15ae4021f002d1c0c9374ae3e4"
+  integrity sha512-eMA/2quQoxwSe8oOBB1H6KNXNqginzt9BHAt2vVVUoQswZNct2QwSAmEMsN/VHj/XSNxM3p+Py15B7omEaAC9w==
+
 "@types/jasmine@~3.6.0":
   version "3.6.2"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.6.2.tgz#02f64450016f7de70f145d698be311136d7c6374"
@@ -5891,6 +5896,14 @@ next-tick@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
+
+ng-recaptcha@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/ng-recaptcha/-/ng-recaptcha-7.0.0.tgz#c12ee29bf5bbcf366f7c7d6832519cbce8ab1f3f"
+  integrity sha512-POw/Dhziu+MOww3chZ+dgyIKjFm7tA71xqdBl9y0ruS4l0TmfTwRiEkmPAYWuDvXAAM8S9NtVYe6RrejeWLsSA==
+  dependencies:
+    "@types/grecaptcha" "^3.0.1"
+    tslib "^2.0.0"
 
 ngx-markdown@^11.0.1:
   version "11.0.1"

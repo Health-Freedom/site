@@ -1,0 +1,6 @@
+<form>
+
+    <input type="text">
+    <re-captcha (resolved)="onRecaptchaResponse($event)"></re-captcha>
+    <button type="submit" [disabled]="!recaptchaResponse">Submit</button>
+</form>
