@@ -4,7 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { throwError } from 'rxjs';
 import { catchError, first, filter } from 'rxjs/operators';
 import { SiteDataService } from 'src/app/site-data.service';
-import { StripeInstance, StripeScriptTag } from 'stripe-angular';
+import { StripeScriptTag } from 'stripe-angular';
 
 @Component({
   selector: 'app-donate',

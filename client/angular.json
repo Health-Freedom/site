@@ -30,7 +30,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/_redirects"
-             ],
+            ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.scss"
@@ -130,5 +130,8 @@
       }
     }
   },
-  "defaultProject": "green-client"
+  "defaultProject": "green-client",
+  "cli": {
+    "analytics": "18c93c7b-3a70-430b-8606-4b50507cf6ab"
+  }
 }
