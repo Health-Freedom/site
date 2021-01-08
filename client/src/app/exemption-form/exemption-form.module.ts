@@ -4,13 +4,17 @@ import { CommonModule } from '@angular/common';
 import { ExemptionFormRoutingModule } from './exemption-form-routing.module';
 import { RecaptchaModule, RecaptchaSettings, RECAPTCHA_SETTINGS } from 'ng-recaptcha';
 import { ExemptionFormComponent } from './exemption-form/exemption-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
   imports: [
     CommonModule,
+    HttpClientModule,
     ExemptionFormRoutingModule,
-    RecaptchaModule
+    RecaptchaModule,
+    ReactiveFormsModule
   ],
   providers: [
     {

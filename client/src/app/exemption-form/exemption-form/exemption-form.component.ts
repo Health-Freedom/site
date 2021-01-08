@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-exemption-form',
@@ -8,7 +10,16 @@ import { Component, OnInit } from '@angular/core';
 export class ExemptionFormComponent implements OnInit {
   recaptchaResponse: string | null = null;
 
-  constructor() { }
+  form = new FormGroup({
+    email: new FormControl('', {
+      validators: [Validators.requiredTrue, Validators.email, Validators.maxLength(100)]
+    }),
+    description: new FormControl('', {
+      validators: [Validators.requiredTrue, Validators.maxLength(100)]
+    })
+  });
+
+  constructor(private http:HttpClient) { }
 
   ngOnInit(): void {
   }
@@ -18,6 +29,8 @@ export class ExemptionFormComponent implements OnInit {
   }
 
   submit() {
-    
+    this.http.post('', {
+
+    });
   }
 }
