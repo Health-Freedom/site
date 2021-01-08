@@ -1,5 +1,6 @@
-<form>
-    <input type="text" class="mb2">
+<form (submit)="submit()">
+    <input type="text" name="email" class="mb2">
+    <textarea name="description" class="mb2"></textarea>
     <div class="mb2">
         <re-captcha (resolved)="onRecaptchaResponse($event)"></re-captcha>
     </div>

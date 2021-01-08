@@ -16,4 +16,8 @@ export class ExemptionFormComponent implements OnInit {
   onRecaptchaResponse(response: string | null) {
     this.recaptchaResponse = response
   }
+
+  submit() {
+    
+  }
 }
