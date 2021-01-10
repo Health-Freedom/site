@@ -19,7 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
     {
       provide: RECAPTCHA_SETTINGS,
-      useValue: { siteKey: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" } as RecaptchaSettings,
+      useValue: { siteKey: "6Lf4uiMaAAAAAN9whHW8q3bt_D75LwdW6Grja_Hc" } as RecaptchaSettings,
     }
   ],
   declarations: [ExemptionFormComponent]
