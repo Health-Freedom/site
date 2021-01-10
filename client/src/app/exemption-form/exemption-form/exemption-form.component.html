@@ -1,15 +1,23 @@
-<form (submit)="submit()" [formGroup]="form" class="flex flex-column w-100 w-50-l">
+<div style="color: red;" *ngIf="errorMessage">{{errorMessage}}</div>
+<form (submit)="submit()" *ngIf="!isDone" [formGroup]="form" class="flex flex-column w-100 w-50-l">
     <mat-form-field class="mb2">
         <mat-label>Email</mat-label>
         <input matInput type="text" name="email" formControlName="email">
-        <mat-error *ngIf="form.get('email')?.errors">{{form.get('email')?.errors | json}}</mat-error>
+        <mat-error *ngIf="form.get('email')?.errors">A valid email address is required</mat-error>
     </mat-form-field>
     <mat-form-field class="mb2">
         <mat-label>Description</mat-label>
         <textarea matInput name="description" formControlName="description"></textarea>
+        <mat-error *ngIf="form.get('description')?.errors">Please enter a description</mat-error>
     </mat-form-field>
     <div class="mb2">
         <re-captcha (resolved)="onRecaptchaResponse($event)"></re-captcha>
     </div>
-    <button class="self-center" mat-raised-button type="submit" [disabled]="!recaptchaResponse">Submit</button>
+    <button class="self-center" mat-raised-button type="submit"
+        [disabled]="!recaptchaResponse"
+        *ngIf="!isLoading">Submit</button>
+        <mat-spinner *ngIf="isLoading"></mat-spinner>
 </form>
+<div *ngIf="isDone">
+    Thank you for your submission! We will be in touch.
+</div>

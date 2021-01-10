@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { BehaviorSubject, throwError } from 'rxjs';
+import { catchError, first, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -9,7 +11,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./exemption-form.component.scss']
 })
 export class ExemptionFormComponent implements OnInit {
-  recaptchaResponse: string | null = null;
+  recaptchaResponse: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
   form = new FormGroup({
     email: new FormControl('', {
@@ -20,20 +22,38 @@ export class ExemptionFormComponent implements OnInit {
     })
   });
 
+  errorMessage?: string;
+  isLoading = false;
+  isDone = false;
+
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
   }
 
   onRecaptchaResponse(response: string | null) {
-    this.recaptchaResponse = response
+    this.recaptchaResponse.next(response);
   }
 
   submit() {
+    this.isLoading = true;
+    this.errorMessage = undefined;
+
     this.http.post(`${environment.apiURL}/recaptcha-post`, {
-      code: this.recaptchaResponse,
+      code: this.recaptchaResponse.value,
       model: 'exemption-request',
       data: this.form.value
-    }).subscribe();
+    }).pipe(
+      catchError(err => {
+        this.errorMessage = err.error;
+        this.isLoading = false;
+        return throwError(err?.error ?? err);
+      }),
+      tap(() => {
+        this.isLoading = false;
+        this.isDone = true;
+      }),
+      first()
+    ).subscribe();
   }
 }
