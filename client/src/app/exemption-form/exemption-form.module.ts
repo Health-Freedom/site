@@ -6,15 +6,19 @@ import { RecaptchaModule, RecaptchaSettings, RECAPTCHA_SETTINGS } from 'ng-recap
 import { ExemptionFormComponent } from './exemption-form/exemption-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
-
+import {MatFormFieldModule} from '@angular/material/form-field'; 
+import { MatInputModule } from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button'; 
 @NgModule({
   imports: [
     CommonModule,
     HttpClientModule,
     ExemptionFormRoutingModule,
     RecaptchaModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
   ],
   providers: [
     {

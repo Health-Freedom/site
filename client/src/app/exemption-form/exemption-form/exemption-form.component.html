@@ -1,8 +1,14 @@
-<form (submit)="submit()" [formGroup]="form" class="flex flex-column w-25">
-    <input type="text" name="email" class="mb2" formControlName="email" placeholder="Email">
-    <textarea name="description" class="mb2" formControlName="description" placeholder="Description"></textarea>
+<form (submit)="submit()" [formGroup]="form" class="flex flex-column w-100 w-50-l">
+    <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput type="text" name="email" class="mb2" formControlName="email">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Description</mat-label>
+        <textarea matInput name="description" class="mb2" formControlName="description"></textarea>
+    </mat-form-field>
     <div class="mb2">
         <re-captcha (resolved)="onRecaptchaResponse($event)"></re-captcha>
     </div>
-    <button type="submit" [disabled]="!recaptchaResponse">Submit</button>
+    <button class="self-center" mat-raised-button type="submit" [disabled]="!recaptchaResponse">Submit</button>
 </form>

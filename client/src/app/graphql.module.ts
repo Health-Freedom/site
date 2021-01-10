@@ -5,16 +5,17 @@ import { HttpLink } from 'apollo-angular/http';
 import { createPersistedQueryLink } from 'apollo-link-persisted-queries';
 import { environment } from './../environments/environment';
 
+const uri = `${environment.apiURL}/graphql`;
 
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   const link = ApolloLink.from([
     createPersistedQueryLink({ useGETForHashedQueries: true }) as any,
-    createHttpLink({ uri: environment.apiURL })
+    createHttpLink({ uri })
   ]);
 
   const persisted = createPersistedQueryLink();
   const http = httpLink.create({
-    uri: environment.apiURL,
+    uri,
   });
 
   const angularLink = persisted.concat(http as any);

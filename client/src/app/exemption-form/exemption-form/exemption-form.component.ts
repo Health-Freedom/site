@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-exemption-form',
@@ -19,7 +20,7 @@ export class ExemptionFormComponent implements OnInit {
     })
   });
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
   }
@@ -29,13 +30,13 @@ export class ExemptionFormComponent implements OnInit {
   }
 
   submit() {
-    this.http.post('', {
+    this.http.post(`${environment.apiURL}/recaptcha-post`, {
       code: this.recaptchaResponse,
-      model: 'exemption_request',
+      model: 'exemption-request',
       data: {
         email: this.form.get('email').value,
         description: this.form.get('description').value
       }
-    });
+    }).subscribe();
   }
 }
