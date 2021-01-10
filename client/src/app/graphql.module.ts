@@ -3,18 +3,18 @@ import { APOLLO_OPTIONS } from 'apollo-angular';
 import { ApolloClientOptions, ApolloLink, createHttpLink, InMemoryCache } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
 import { createPersistedQueryLink } from 'apollo-link-persisted-queries';
+import { environment } from './../environments/environment';
 
-const uri = 'https://strapi.yrtestingdomainfor.info/graphql';
 
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   const link = ApolloLink.from([
     createPersistedQueryLink({ useGETForHashedQueries: true }) as any,
-    createHttpLink({ uri })
+    createHttpLink({ uri: environment.apiURL })
   ]);
 
   const persisted = createPersistedQueryLink();
   const http = httpLink.create({
-    uri,
+    uri: environment.apiURL,
   });
 
   const angularLink = persisted.concat(http as any);

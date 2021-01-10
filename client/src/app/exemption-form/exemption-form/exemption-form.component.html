@@ -1,6 +1,6 @@
-<form (submit)="submit()" formGroupName="form">
-    <input type="text" name="email" class="mb2" formControlName="email">
-    <textarea name="description" class="mb2" formControlName="description"></textarea>
+<form (submit)="submit()" [formGroup]="form" class="flex flex-column w-25">
+    <input type="text" name="email" class="mb2" formControlName="email" placeholder="Email">
+    <textarea name="description" class="mb2" formControlName="description" placeholder="Description"></textarea>
     <div class="mb2">
         <re-captcha (resolved)="onRecaptchaResponse($event)"></re-captcha>
     </div>
