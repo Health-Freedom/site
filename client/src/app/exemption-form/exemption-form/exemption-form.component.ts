@@ -33,10 +33,7 @@ export class ExemptionFormComponent implements OnInit {
     this.http.post(`${environment.apiURL}/recaptcha-post`, {
       code: this.recaptchaResponse,
       model: 'exemption-request',
-      data: {
-        email: this.form.get('email').value,
-        description: this.form.get('description').value
-      }
+      data: this.form.value
     }).subscribe();
   }
 }
