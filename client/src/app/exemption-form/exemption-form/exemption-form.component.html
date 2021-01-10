@@ -1,11 +1,12 @@
 <form (submit)="submit()" [formGroup]="form" class="flex flex-column w-100 w-50-l">
-    <mat-form-field>
+    <mat-form-field class="mb2">
         <mat-label>Email</mat-label>
-        <input matInput type="text" name="email" class="mb2" formControlName="email">
+        <input matInput type="text" name="email" formControlName="email">
+        <mat-error *ngIf="form.get('email').errors">{{form.get('email').errors | json}}</mat-error>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="mb2">
         <mat-label>Description</mat-label>
-        <textarea matInput name="description" class="mb2" formControlName="description"></textarea>
+        <textarea matInput name="description" formControlName="description"></textarea>
     </mat-form-field>
     <div class="mb2">
         <re-captcha (resolved)="onRecaptchaResponse($event)"></re-captcha>

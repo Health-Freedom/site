@@ -13,10 +13,10 @@ export class ExemptionFormComponent implements OnInit {
 
   form = new FormGroup({
     email: new FormControl('', {
-      validators: [Validators.requiredTrue, Validators.email, Validators.maxLength(100)]
+      validators: [Validators.required, Validators.email, Validators.maxLength(100)]
     }),
     description: new FormControl('', {
-      validators: [Validators.requiredTrue, Validators.maxLength(100)]
+      validators: [Validators.required, Validators.maxLength(100)]
     })
   });
 
