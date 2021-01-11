@@ -7,6 +7,7 @@
         <mat-icon>home</mat-icon>Home
       </button>
       <button mat-list-item routerLink="/donate" (click)="drawer.close()">Donate</button>
+      <button mat-list-item routerLink="/exemption" (click)="drawer.close()">Religious Exemptions</button>
     </mat-action-list>
     <mat-divider></mat-divider>
     <mat-nav-list *ngIf="menuCategories">
@@ -25,6 +26,7 @@
       <span>{{ siteTitle$| async }}</span>
       <ng-container *ngIf="!(isHandset$ | async)">
         <span class="toolbar-spacer"></span>
+        <button mat-button routerLink="/exemption">Religious Exemptions</button>
         <button mat-button routerLink="/donate">Donate</button>
         <button mat-button routerLink="/">
           <mat-icon>home</mat-icon>Home
