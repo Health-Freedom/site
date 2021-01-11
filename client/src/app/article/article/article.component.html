@@ -1,10 +1,10 @@
 <mat-toolbar *ngIf="is404 else content">Error: Requested article doesn't exist.</mat-toolbar>
 <ng-template #content>
     <mat-toolbar>{{ article?.title }}</mat-toolbar>
-    <div class="mw7 mh4">
-        <article [innerHTML]="articleText" *ngIf="articleText"></article>
+    <div class="mw7">
         <article class="aspect-ratio aspect-ratio--4x3" *ngIf="article?.video_source">
             <div [innerHTML]="videoSource"></div>
         </article>
+        <article [innerHTML]="articleText" *ngIf="articleText"></article>
     </div>
 </ng-template>
