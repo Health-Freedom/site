@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BehaviorSubject, throwError } from 'rxjs';
@@ -44,10 +44,10 @@ export class ExemptionFormComponent implements OnInit {
       model: 'exemption-request',
       data: this.form.value
     }).pipe(
-      catchError(err => {
-        this.errorMessage = err.error;
+      catchError((err: HttpErrorResponse) => {
+        this.errorMessage = err.error?.error;
         this.isLoading = false;
-        return throwError(err?.error ?? err);
+        return throwError(this.errorMessage);
       }),
       tap(() => {
         this.isLoading = false;
