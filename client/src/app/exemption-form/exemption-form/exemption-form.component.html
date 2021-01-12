@@ -7,7 +7,7 @@
     </mat-form-field>
     <mat-form-field class="mb2">
         <mat-label>Description</mat-label>
-        <textarea matInput name="description" formControlName="description"></textarea>
+        <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="3" name="description" formControlName="description"></textarea>
         <mat-error *ngIf="form.get('description')?.errors">Please enter a description</mat-error>
     </mat-form-field>
     <div class="mb2">
