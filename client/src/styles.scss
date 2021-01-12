@@ -2,3 +2,7 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// tachyons defaults everything to border box, which causes issues with text area auto size.
+textarea {
+    box-sizing: content-box;;
+}
