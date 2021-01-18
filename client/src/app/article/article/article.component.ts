@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, SecurityContext, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { rawListeners } from 'process';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { SiteDataService } from 'src/app/site-data.service';
 import { getArticle_article } from 'src/grapqlTypes/getArticle';
@@ -17,9 +16,14 @@ import { VideoPlayerService } from '../video-player.service';
 export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
 
   article?: getArticle_article|null;
-  subscription!: Subscription;
+
+  subscription?: Subscription;
+
   is404 = false;
+
   @ViewChild('rumbleParent', { static: false }) rumbleParent!: ElementRef;
+
+  articleStream$!:Observable<getArticle_article | null>;
 
   constructor(private route: ActivatedRoute,
     private siteDataService: SiteDataService,
@@ -28,7 +32,7 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
   get articleText() {
-    return this.sanitizer.bypassSecurityTrustHtml(this.article?.body ?? '');
+    return this.sanitizer.sanitize(SecurityContext.HTML, this.article?.body ?? '');
   }
 
   get iframeUrls() {
@@ -38,7 +42,15 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     (this.rumbleParent.nativeElement as HTMLDivElement).appendChild(this.videoPlayer.rumbleElement);
 
-    const stream$ = this.route.paramMap.pipe(
+    this.subscription = this.articleStream$.subscribe(article => {
+      if (article!.video_source) {
+        this.videoPlayer.play(article!.video_source);
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    this.articleStream$ = this.route.paramMap.pipe(
       switchMap(params =>
         this.siteDataService.getArticle(params.get('id')!).valueChanges
       ),
@@ -55,19 +67,9 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
         this.article = article;
       })
     );
-
-    this.subscription = stream$.subscribe(article => {
-      if (article!.video_source) {
-        this.videoPlayer.play(article!.video_source);
-      }
-    });
-  }
-
-  ngOnInit(): void {
-
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscription?.unsubscribe();
   }
 }
