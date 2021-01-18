@@ -5,7 +5,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ArticleRoutingModule } from './article-routing.module';
 import { ArticleComponent } from './article/article.component';
 import { MarkdownModule } from 'ngx-markdown';
-import { VideoPlayerService } from './video-player.service';
 import { ScriptLoaderModule } from 'ngx-script-loader';
 
 
@@ -15,7 +14,6 @@ import { ScriptLoaderModule } from 'ngx-script-loader';
     CommonModule,
     ArticleRoutingModule,
     MatToolbarModule,
-    VideoPlayerService,
     ScriptLoaderModule,
     MarkdownModule.forChild()
   ]

@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-import { ScriptLoaderModule, ScriptService } from 'ngx-script-loader';
+import { Injectable, SecurityContext } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ScriptService } from 'ngx-script-loader';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -7,11 +8,10 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class VideoPlayerService {
 
-  constructor(private scriptService: ScriptService) {
-
+  constructor(private scriptService: ScriptService, private sanitizer: DomSanitizer) {
   }
 
-  iframeUrls: BehaviorSubject<string|null> = new BehaviorSubject<string|null>(null);
+  iframeUrls: BehaviorSubject<SafeResourceUrl|null> = new BehaviorSubject<SafeResourceUrl|null>(null);
 
   private _rumbleApi?:any;
 
@@ -23,27 +23,30 @@ export class VideoPlayerService {
       const urlParts = source.split("?v=");
       
       if (urlParts.length == 2) {
-        this.iframeUrls.next(`https://www.youtube.com/embed/-${urlParts[1]}`);
-      } else {
-        this.iframeUrls.next(null);
-        throw new Error('Invalid youtube source url: ' + source);
+        const safeUrl = this.sanitizer.sanitize(SecurityContext.URL, `https://www.youtube.com/embed/-${urlParts[1]}`);
+
+        if (safeUrl) {
+          this.iframeUrls.next(this.sanitizer.bypassSecurityTrustResourceUrl(safeUrl));
+        }
+
+        return;
       }
 
-      return;
+      this.iframeUrls.next(null);
+      throw new Error('Invalid youtube source url: ' + source);
     }
 
     this.iframeUrls.next(null);
     
     if (source.includes('rumble.com')) {
       try {
-        // Parse URL of type https://rumble.com/vcv17b-brown-bear-encounter.html
-        const id = source.split('rumble.com/')[1].split('-')[0];
-        this.scriptService.loadScript('https://rumble.com/embedJS/uabcd.vabcd/').subscribe(() => {
+        // Parse URL of type https://rumble.com/embed/v92vyt/?pub=94q5v
+        const id = source.split('rumble.com/embed/')[1].split('/')[0];
+        this.scriptService.loadScript('https://rumble.com/embedJS/u94q5v').subscribe(() => {
           (window as any).Rumble('play', {
             video: id,
             div: 'rumblePlayer',
-            rel: 5,
-            api: (api:any) => this._rumbleApi = api
+            rel: 5
           })
         });
       } catch {
