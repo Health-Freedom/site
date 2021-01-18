@@ -19,8 +19,13 @@ export class VideoPlayerService {
 
   rumbleElement!: HTMLDivElement;
 
-  play(source:string) {
+  stop() {
     this._rumbleApi?.pause();
+    this.iframeUrls.next(null);
+  }
+
+  play(source:string) {
+    this.stop();
     const lowerSource = source.toLowerCase();
 
     if (lowerSource.includes('youtube.com') || lowerSource.includes('youtu.be')) {
