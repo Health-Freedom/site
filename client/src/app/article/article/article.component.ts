@@ -71,5 +71,6 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
+    this.videoPlayer.iframeUrls.next(null);
   }
 }
