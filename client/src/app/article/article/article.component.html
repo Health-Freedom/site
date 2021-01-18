@@ -2,7 +2,7 @@
 <ng-template #content>
     <mat-toolbar>{{ article?.title }}</mat-toolbar>
     <div class="mw7">
-        <article class="aspect-ratio aspect-ratio--4x3" *ngIf="article?.video_source">
+        <article [class]="isIframe ? 'aspect-ratio aspect-ratio--4x3' : ''" *ngIf="article?.video_source">
             <div [innerHTML]="videoSource"></div>
         </article>
         <article [innerHTML]="articleText" *ngIf="articleText"></article>
