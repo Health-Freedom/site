@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { rawListeners } from 'process';
@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { SiteDataService } from 'src/app/site-data.service';
 import { getArticle_article } from 'src/grapqlTypes/getArticle';
+import { VideoPlayerService } from '../video-player.service';
 
 @Component({
   selector: 'app-article',
@@ -22,41 +23,14 @@ export class ArticleComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
     private siteDataService: SiteDataService,
     private sanitizer: DomSanitizer,
-    private renderer: Renderer2) { }
+    private videoPlayer: VideoPlayerService) { }
 
   get articleText() {
     return this.sanitizer.bypassSecurityTrustHtml(this.article?.body ?? '');
   }
 
-  get isIframe() {
-    return this.article?.video_source?.toLowerCase()?.includes('iframe') ?? false; 
-  }
-
-  get videoSource() {
-    const rawSource = this.article?.video_source;
-
-    if (!rawSource) {
-      return null;
-    }
-
-    if (this.isIframe) {
-      const newNode = this.renderer.createElement('div') as HTMLDivElement;
-      newNode.innerHTML = rawSource;
-      newNode.querySelector('iframe')?.classList.add('aspect-ratio--object');
-
-      return this.sanitizer.bypassSecurityTrustHtml(newNode.innerHTML);
-    }
-
-    if (rawSource?.includes('script')) {
-        const newNode = this.renderer.createElement('div') as HTMLDivElement;
-        newNode.innerHTML = rawSource;
-        newNode.querySelectorAll('script').forEach(elem => {
-          eval(elem.innerHTML);
-          elem.remove();
-        });
-    }
-
-    return this.sanitizer.bypassSecurityTrustHtml(rawSource);
+  get iframeUrls() {
+    return this.videoPlayer.iframeUrls;
   }
 
   ngOnInit(): void {
@@ -72,10 +46,17 @@ export class ArticleComponent implements OnInit, OnDestroy {
         }
       }),
       map(response => response.data.article),
-      filter(response => !!response)
+      filter(article => !!article),
+      tap(article => {
+        this.article = article;
+
+        if (article!.video_source) {
+          this.videoPlayer.play(article!.video_source);
+        }
+      })
     );
 
-    this.subscription = stream$.subscribe(article => this.article = article);
+    this.subscription = stream$.subscribe();
   }
 
   ngOnDestroy(): void {
