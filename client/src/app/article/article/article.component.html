@@ -2,7 +2,7 @@
 <ng-template #content>
     <mat-toolbar>{{ article?.title }}</mat-toolbar>
     <div class="mw7">
-        <div id='rumblePlayer' [class]="(iframeUrls | async) ? 'dn' : ''"></div>
+        <div [class]="(iframeUrls | async) ? 'dn' : ''" #rumbleParent></div>
         <article class="aspect-ratio aspect-ratio--4x3" *ngIf="iframeUrls | async">
             <iframe [src]=" iframeUrls | async" class="aspect-ratio--object"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </article>

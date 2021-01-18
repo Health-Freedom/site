@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { rawListeners } from 'process';
@@ -14,16 +14,18 @@ import { VideoPlayerService } from '../video-player.service';
   styleUrls: ['./article.component.scss'],
   preserveWhitespaces: true
 })
-export class ArticleComponent implements OnInit, OnDestroy {
+export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
 
   article?: getArticle_article|null;
   subscription!: Subscription;
   is404 = false;
+  @ViewChild('rumbleParent', { static: false }) rumbleParent!: ElementRef;
 
   constructor(private route: ActivatedRoute,
     private siteDataService: SiteDataService,
     private sanitizer: DomSanitizer,
-    private videoPlayer: VideoPlayerService) { }
+    private videoPlayer: VideoPlayerService) { 
+    }
 
   get articleText() {
     return this.sanitizer.bypassSecurityTrustHtml(this.article?.body ?? '');
@@ -33,7 +35,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
     return this.videoPlayer.iframeUrls;
   }
 
-  ngOnInit(): void {
+  ngAfterViewInit() {
+    (this.rumbleParent.nativeElement as HTMLDivElement).appendChild(this.videoPlayer.rumbleElement);
+
     const stream$ = this.route.paramMap.pipe(
       switchMap(params =>
         this.siteDataService.getArticle(params.get('id')!).valueChanges
@@ -49,14 +53,18 @@ export class ArticleComponent implements OnInit, OnDestroy {
       filter(article => !!article),
       tap(article => {
         this.article = article;
-
-        if (article!.video_source) {
-          this.videoPlayer.play(article!.video_source);
-        }
       })
     );
 
-    this.subscription = stream$.subscribe();
+    this.subscription = stream$.subscribe(article => {
+      if (article!.video_source) {
+        this.videoPlayer.play(article!.video_source);
+      }
+    });
+  }
+
+  ngOnInit(): void {
+
   }
 
   ngOnDestroy(): void {

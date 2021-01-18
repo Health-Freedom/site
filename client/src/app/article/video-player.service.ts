@@ -1,4 +1,4 @@
-import { Injectable, SecurityContext } from '@angular/core';
+import { Injectable, OnInit, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ScriptService } from 'ngx-script-loader';
 import { BehaviorSubject } from 'rxjs';
@@ -9,11 +9,15 @@ import { BehaviorSubject } from 'rxjs';
 export class VideoPlayerService {
 
   constructor(private scriptService: ScriptService, private sanitizer: DomSanitizer) {
+    this.rumbleElement = document.createElement('div');
+    this.rumbleElement.id = 'rumblePlayer';
   }
 
   iframeUrls: BehaviorSubject<SafeResourceUrl|null> = new BehaviorSubject<SafeResourceUrl|null>(null);
 
   private _rumbleApi?:any;
+
+  rumbleElement!: HTMLDivElement;
 
   play(source:string) {
     this._rumbleApi?.pause();
@@ -42,13 +46,19 @@ export class VideoPlayerService {
       try {
         // Parse URL of type https://rumble.com/embed/v92vyt/?pub=94q5v
         const id = source.split('rumble.com/embed/')[1].split('/')[0];
-        this.scriptService.loadScript('https://rumble.com/embedJS/u94q5v').subscribe(() => {
-          (window as any).Rumble('play', {
-            video: id,
-            div: 'rumblePlayer',
-            rel: 5
-          })
-        });
+
+        if (this._rumbleApi) {
+          this._rumbleApi.loadVideo(id);
+        } else {
+          this.scriptService.loadScript('https://rumble.com/embedJS/u94q5v').subscribe(() => {
+            (window as any).Rumble('play', {
+              video: id,
+              div: 'rumblePlayer',
+              rel: 5,
+              api: (api:any) => this._rumbleApi = api
+            })
+          });
+        }
       } catch {
         throw new Error('Invalid rumble source url: ' + source);
       }
