@@ -21,13 +21,13 @@ export class VideoPlayerService {
 
   play(source:string) {
     this._rumbleApi?.pause();
-    source = source.toLowerCase();
+    const lowerSource = source.toLowerCase();
 
-    if (source.includes('youtube.com') || source.includes('youtu.be')) {
+    if (lowerSource.includes('youtube.com') || lowerSource.includes('youtu.be')) {
       const urlParts = source.split("?v=");
       
       if (urlParts.length == 2) {
-        const safeUrl = this.sanitizer.sanitize(SecurityContext.URL, `https://www.youtube.com/embed/-${urlParts[1]}`);
+        const safeUrl = this.sanitizer.sanitize(SecurityContext.URL, `https://www.youtube.com/embed/${urlParts[1]}`);
 
         if (safeUrl) {
           this.iframeUrls.next(this.sanitizer.bypassSecurityTrustResourceUrl(safeUrl));
@@ -42,7 +42,7 @@ export class VideoPlayerService {
 
     this.iframeUrls.next(null);
     
-    if (source.includes('rumble.com')) {
+    if (lowerSource.includes('rumble.com')) {
       try {
         // Parse URL of type https://rumble.com/embed/v92vyt/?pub=94q5v
         const id = source.split('rumble.com/embed/')[1].split('/')[0];
