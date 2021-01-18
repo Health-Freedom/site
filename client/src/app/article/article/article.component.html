@@ -2,7 +2,8 @@
 <ng-template #content>
     <mat-toolbar>{{ article?.title }}</mat-toolbar>
     <div class="mw7">
-        <article [class]="isIframe ? 'aspect-ratio aspect-ratio--4x3' : ''" *ngIf="article?.video_source">
+        <div id='rumblePlayer' [class]="isIframe ? 'd-none' : ''"></div>
+        <article class="aspect-ratio aspect-ratio--4x3" *ngIf="isIframe">
             <div [innerHTML]="videoSource"></div>
         </article>
         <article [innerHTML]="articleText" *ngIf="articleText"></article>
