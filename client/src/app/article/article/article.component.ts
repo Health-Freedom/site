@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, SecurityContext, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { ScullyRoutesService } from '@scullyio/ng-lib';
 import { SeoSocialShareService } from 'ngx-seo';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
@@ -30,7 +31,14 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
     private siteDataService: SiteDataService,
     private sanitizer: DomSanitizer,
     private videoPlayer: VideoPlayerService,
-    private seo: SeoSocialShareService) { 
+    private seo: SeoSocialShareService,
+    private scully: ScullyRoutesService) {
+      this.scully.getCurrent().subscribe(route => {
+        this.seo.setData({
+          title: route!.title ?? 'Article',
+          description: route!.description ?? undefined
+        })
+      })
     }
 
   get articleText() {
