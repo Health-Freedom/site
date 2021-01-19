@@ -4,6 +4,7 @@ import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { SiteDataService } from 'src/app/site-data.service';
 import { Observable } from 'rxjs';
 import { categoryContents_category, categoryContents_category_articles, categoryContents_category_children } from 'src/grapqlTypes/categoryContents';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-category-route',
@@ -19,7 +20,8 @@ export class CategoryRouteComponent implements OnInit {
   is404 = false;
 
   constructor(private route: ActivatedRoute,
-    private siteDataService: SiteDataService) { }
+    private siteDataService: SiteDataService,
+    private title: Title) { }
 
   ngOnInit(): void {
     const category$ = this.route.paramMap.pipe(
@@ -34,7 +36,8 @@ export class CategoryRouteComponent implements OnInit {
         }
       }),
       map(response => response.data.category),
-      filter(response => !!response)
+      filter(response => !!response),
+      tap(category => this.title.setTitle(category!.title ?? ''))
     );
 
     category$.subscribe(category => {
