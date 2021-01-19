@@ -1,4 +1,5 @@
 [build]
   command = "make"
   functions = "_functions"
+  publish = "dist/static"
 [build.environment]

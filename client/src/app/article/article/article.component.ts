@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, SecurityContext, ViewChild } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
@@ -28,7 +28,8 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private route: ActivatedRoute,
     private siteDataService: SiteDataService,
     private sanitizer: DomSanitizer,
-    private videoPlayer: VideoPlayerService) { 
+    private videoPlayer: VideoPlayerService,
+    private title:Title) { 
     }
 
   get articleText() {
@@ -63,6 +64,9 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
       }),
       map(response => response.data.article),
       filter(article => !!article),
+      tap(article => {
+        this.title.setTitle(article!.title ?? 'Article')
+      }),
       tap(article => {
         this.article = article;
       })
