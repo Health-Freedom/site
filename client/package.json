@@ -10,7 +10,9 @@
     "e2e": "ng e2e",
     "gentypes": "apollo client:codegen --target typescript --outputFlat  src/grapqlTypes",
     "scully": "scully",
-    "scully:serve": "scully serve"
+    "scully:serve": "scully serve",
+    "jam": "ng build && yarn scully",
+    "jam-prod": "ng build --prod && yarn scully"
   },
   "private": true,
   "dependencies": {
