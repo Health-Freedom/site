@@ -33,12 +33,31 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
     private videoPlayer: VideoPlayerService,
     private seo: SeoSocialShareService,
     private scully: ScullyRoutesService) {
-      this.scully.getCurrent().subscribe(route => {
-        this.seo.setData({
-          title: route!.title ?? 'Article',
-          description: route!.description ?? undefined
+      this.articleStream$ = this.route.paramMap.pipe(
+        switchMap(params =>
+          this.siteDataService.getArticle(params.get('id')!).valueChanges
+        ),
+        tap(response => {
+          if (!response.loading && !response.data?.article) {
+            this.is404 = true;
+          } else {
+            this.is404 = false;
+          }
+        }),
+        map(response => response.data.article),
+        filter(article => !!article),
+        tap(article => {
+          this.seo.setData({
+            title: article!.title ?? 'Article',
+            description: article!.summary ?? undefined
+          })
+        }),
+        tap(article => {
+          this.article = article;
         })
-      })
+      );
+
+      this.subscription = this.articleStream$.subscribe();
     }
 
   get articleText() {
@@ -60,29 +79,7 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.articleStream$ = this.route.paramMap.pipe(
-      switchMap(params =>
-        this.siteDataService.getArticle(params.get('id')!).valueChanges
-      ),
-      tap(response => {
-        if (!response.loading && !response.data?.article) {
-          this.is404 = true;
-        } else {
-          this.is404 = false;
-        }
-      }),
-      map(response => response.data.article),
-      filter(article => !!article),
-      tap(article => {
-        this.seo.setData({
-          title: article!.title ?? 'Article',
-          description: article!.summary ?? undefined
-        })
-      }),
-      tap(article => {
-        this.article = article;
-      })
-    );
+
   }
 
   ngOnDestroy(): void {
