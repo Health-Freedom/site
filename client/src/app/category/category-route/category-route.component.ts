@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, } from '@angular/router';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { SiteDataService } from 'src/app/site-data.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { categoryContents_category, categoryContents_category_articles, categoryContents_category_children } from 'src/grapqlTypes/categoryContents';
 import { SeoSocialShareService } from 'ngx-seo';
 
@@ -11,11 +11,12 @@ import { SeoSocialShareService } from 'ngx-seo';
   templateUrl: './category-route.component.html',
   styleUrls: ['./category-route.component.scss']
 })
-export class CategoryRouteComponent implements OnInit {
+export class CategoryRouteComponent implements OnInit, OnDestroy {
 
   articles$: Observable<(categoryContents_category_articles|null)[]|null>|null= null;
   hasArticlesAndCategories$!: Observable<boolean>;
   childCategories: (categoryContents_category_children|null)[]|null = null;
+  subscription!: Subscription;
   category: categoryContents_category | null = null;
   is404 = false;
 
@@ -43,7 +44,7 @@ export class CategoryRouteComponent implements OnInit {
       }))
     );
 
-    category$.subscribe(category => {
+    this.subscription = category$.subscribe(category => {
       this.category = category;
       this.childCategories = category?.children ?? null
     });
@@ -57,4 +58,7 @@ export class CategoryRouteComponent implements OnInit {
     );
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }

@@ -19,7 +19,7 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
 
   article?: getArticle_article|null;
 
-  subscription?: Subscription;
+  subscriptions: Subscription[] = [];
 
   is404 = false;
 
@@ -31,33 +31,7 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
     private siteDataService: SiteDataService,
     private sanitizer: DomSanitizer,
     private videoPlayer: VideoPlayerService,
-    private seo: SeoSocialShareService,
-    private scully: ScullyRoutesService) {
-      this.articleStream$ = this.route.paramMap.pipe(
-        switchMap(params =>
-          this.siteDataService.getArticle(params.get('id')!).valueChanges
-        ),
-        tap(response => {
-          if (!response.loading && !response.data?.article) {
-            this.is404 = true;
-          } else {
-            this.is404 = false;
-          }
-        }),
-        map(response => response.data.article),
-        filter(article => !!article),
-        tap(article => {
-          this.seo.setData({
-            title: article!.title ?? 'Article',
-            description: article!.summary ?? undefined
-          })
-        }),
-        tap(article => {
-          this.article = article;
-        })
-      );
-
-      this.subscription = this.articleStream$.subscribe();
+    private seo: SeoSocialShareService) {
     }
 
   get articleText() {
@@ -71,19 +45,44 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     (this.rumbleParent.nativeElement as HTMLDivElement).appendChild(this.videoPlayer.rumbleElement);
 
-    this.subscription = this.articleStream$.subscribe(article => {
+    this.subscriptions.push(this.articleStream$.subscribe(article => {
       if (article!.video_source) {
         this.videoPlayer.play(article!.video_source);
       }
-    });
+    }));
   }
 
   ngOnInit(): void {
+    this.articleStream$ = this.route.paramMap.pipe(
+      switchMap(params =>
+        this.siteDataService.getArticle(params.get('id')!).valueChanges
+      ),
+      tap(response => {
+        if (!response.loading && !response.data?.article) {
+          this.is404 = true;
+        } else {
+          this.is404 = false;
+        }
+      }),
+      map(response => response.data.article),
+      filter(article => !!article),
+      tap(article => {
+        this.seo.setData({
+          title: article!.title ?? 'Article',
+          description: article!.summary ?? undefined
+        })
+      }),
+      tap(article => {
+        this.article = article;
+      })
+    );
 
+    this.subscriptions.push(this.articleStream$.subscribe());
   }
 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe())
+    this.subscriptions = [];
     this.videoPlayer.stop();
   }
 }
