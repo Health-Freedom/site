@@ -6497,6 +6497,13 @@ ngx-script-loader@^1.3.0:
   dependencies:
     tslib "^1.9.0"
 
+ngx-seo@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/ngx-seo/-/ngx-seo-5.2.0.tgz#f67a9b8fc8016a1346c430c4bc693926f2e028cd"
+  integrity sha512-M8xGXai/S9YqvrLkobbWPO2WBeA5h7AK6E9moJOB2dqOvLrrNZu/t1VIqFg2Dw8ieJ5jggJaimmAgxBPg3BQVQ==
+  dependencies:
+    tslib "^2.0.0"
+
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"

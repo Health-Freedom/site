@@ -1,27 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, } from '@angular/router';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { SiteDataService } from 'src/app/site-data.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { categoryContents_category, categoryContents_category_articles, categoryContents_category_children } from 'src/grapqlTypes/categoryContents';
-import { Title } from '@angular/platform-browser';
+import { SeoSocialShareService } from 'ngx-seo';
 
 @Component({
   selector: 'app-category-route',
   templateUrl: './category-route.component.html',
   styleUrls: ['./category-route.component.scss']
 })
-export class CategoryRouteComponent implements OnInit {
+export class CategoryRouteComponent implements OnInit, OnDestroy {
 
   articles$: Observable<(categoryContents_category_articles|null)[]|null>|null= null;
   hasArticlesAndCategories$!: Observable<boolean>;
   childCategories: (categoryContents_category_children|null)[]|null = null;
+  subscription!: Subscription;
   category: categoryContents_category | null = null;
   is404 = false;
 
   constructor(private route: ActivatedRoute,
     private siteDataService: SiteDataService,
-    private title: Title) { }
+    private seo: SeoSocialShareService) { }
 
   ngOnInit(): void {
     const category$ = this.route.paramMap.pipe(
@@ -37,10 +38,13 @@ export class CategoryRouteComponent implements OnInit {
       }),
       map(response => response.data.category),
       filter(response => !!response),
-      tap(category => this.title.setTitle(category!.title ?? ''))
+      tap(category => this.seo.setData({
+        title: category!.title ?? 'Category',
+        description: category!.description ?? undefined
+      }))
     );
 
-    category$.subscribe(category => {
+    this.subscription = category$.subscribe(category => {
       this.category = category;
       this.childCategories = category?.children ?? null
     });
@@ -54,4 +58,7 @@ export class CategoryRouteComponent implements OnInit {
     );
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }

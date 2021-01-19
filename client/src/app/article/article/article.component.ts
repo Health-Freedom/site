@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, SecurityContext, ViewChild } from '@angular/core';
-import { DomSanitizer, Title } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { ScullyRoutesService } from '@scullyio/ng-lib';
+import { SeoSocialShareService } from 'ngx-seo';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { SiteDataService } from 'src/app/site-data.service';
@@ -17,7 +19,7 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
 
   article?: getArticle_article|null;
 
-  subscription?: Subscription;
+  subscriptions: Subscription[] = [];
 
   is404 = false;
 
@@ -29,7 +31,7 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
     private siteDataService: SiteDataService,
     private sanitizer: DomSanitizer,
     private videoPlayer: VideoPlayerService,
-    private title:Title) { 
+    private seo: SeoSocialShareService) {
     }
 
   get articleText() {
@@ -43,11 +45,11 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     (this.rumbleParent.nativeElement as HTMLDivElement).appendChild(this.videoPlayer.rumbleElement);
 
-    this.subscription = this.articleStream$.subscribe(article => {
+    this.subscriptions.push(this.articleStream$.subscribe(article => {
       if (article!.video_source) {
         this.videoPlayer.play(article!.video_source);
       }
-    });
+    }));
   }
 
   ngOnInit(): void {
@@ -65,16 +67,22 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
       map(response => response.data.article),
       filter(article => !!article),
       tap(article => {
-        this.title.setTitle(article!.title ?? 'Article')
+        this.seo.setData({
+          title: article!.title ?? 'Article',
+          description: article!.summary ?? undefined
+        })
       }),
       tap(article => {
         this.article = article;
       })
     );
+
+    this.subscriptions.push(this.articleStream$.subscribe());
   }
 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe())
+    this.subscriptions = [];
     this.videoPlayer.stop();
   }
 }
