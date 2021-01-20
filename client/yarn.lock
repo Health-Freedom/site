@@ -1311,6 +1311,24 @@
     tslib "^2.0.0"
     zone.js "^0.10.3"
 
+"@scullyio/scully-plugin-flash-prevention@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@scullyio/scully-plugin-flash-prevention/-/scully-plugin-flash-prevention-1.0.0.tgz#baff5b91fa16026b689c2dc4efdcbc408773b0c4"
+  integrity sha512-ZQliCDd1iu0zu9/ugPVBTMG7+s8qqoZ8sTva/j1zOp2wzwAHBfjQXnLg9PKHG6Dl7W+yfPD5PwbWPkCqCvlGNA==
+  dependencies:
+    "@sentry/node" "^5.20.1"
+    chalk "^4.1.0"
+    compression "^1.7.4"
+    cors "^2.8.5"
+    express "4.17.1"
+    js-yaml "^3.14.0"
+    jsdom "^16.4.0"
+    os "^0.1.1"
+    prismjs "1.21.0"
+    rxjs "^6.6.2"
+    tslib "^1.13.0"
+    ws "^7.3.1"
+
 "@scullyio/scully@^1.0.0":
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/@scullyio/scully/-/scully-1.0.11.tgz#40358652e2c47d2954498e32fe67337234c091c2"
@@ -4108,7 +4126,7 @@ expand-brackets@^2.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-express@^4.17.1:
+express@4.17.1, express@^4.17.1:
   version "4.17.1"
   resolved "https://registry.yarnpkg.com/express/-/express-4.17.1.tgz#4491fc38605cf51f8629d39c2b5d026f98a4c134"
   integrity sha512-mHJ9O79RqluphRrcw2X/GTh3k9tVv8YcoyY4Kkh4WDMUYKRZUq0h1o0w2rrrxBqM7VoeUVqgb27xlEMXTnYt4g==
@@ -10078,7 +10096,7 @@ ws@^6.2.1:
   dependencies:
     async-limiter "~1.0.0"
 
-ws@^7.2.3, ws@^7.4.0, ws@~7.4.2:
+ws@^7.2.3, ws@^7.3.1, ws@^7.4.0, ws@~7.4.2:
   version "7.4.2"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.2.tgz#782100048e54eb36fe9843363ab1c68672b261dd"
   integrity sha512-T4tewALS3+qsrpGI/8dqNMLIVdq/g/85U98HPMa6F0m6xTbvhXU6RCQLqPH3+SlomNV/LdY6RXEbBpMH6EOJnA==
