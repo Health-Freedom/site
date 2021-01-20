@@ -30,6 +30,19 @@ export class AppMainComponent implements OnInit {
     this.siteTitle$ = this.siteDataService.getSettings().valueChanges.pipe(
       map(settings => settings.data?.setting?.site_title ?? null)
     )
+
+    // The desktop-menu-margin class is only added when the site is rendered for mobile.
+    // In such case, if the mobile is being presented for desktop, add margin so that the content doesn't jump around.
+    const style = `
+@media ${Breakpoints.Handset} {
+  .desktop-menu-margin {
+    margin-left: 200px;
+  }
+}`;
+
+  const styleElement = document.createElement('style');
+  styleElement.innerHTML = style;
+  document.head.append(styleElement);
   }
  
 }
