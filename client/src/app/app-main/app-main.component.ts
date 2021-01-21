@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, Subscription } from 'rxjs';
-import { first, map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { SiteDataService, } from '../site-data.service';
-import { IdleMonitorService, isScullyRunning } from '@scullyio/ng-lib';
+import { isScullyRunning } from '@scullyio/ng-lib';
 
 @Component({
   selector: 'app-main',
@@ -26,7 +26,6 @@ export class AppMainComponent implements OnInit, OnDestroy {
   subscription!:Subscription;
 
   constructor(private breakpointObserver: BreakpointObserver,
-    private idleMonitorService:IdleMonitorService,
     private siteDataService: SiteDataService) {
   }
 
@@ -35,10 +34,6 @@ export class AppMainComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription = this.idleMonitorService.idle$.subscribe(() => {
-      window.dispatchEvent(new Event('resize'));
-    });
-
     this.siteTitle$ = this.siteDataService.getSettings().valueChanges.pipe(
       map(settings => settings.data?.setting?.site_title ?? null)
     )
