@@ -47,13 +47,12 @@ export class AppMainComponent implements OnInit, OnDestroy {
       // The desktop-menu-margin class is only added when the site is rendered for mobile.
       // In such case, if the mobile is being presented for desktop, add margin so that the content doesn't jump around.
       const style = `
-      app-root-scully .desktop-menu-margin {
-        position:relative;
-        left: 200px;
+      mat-sidenav-content {
+        margin-left: 200px;
       }
       @media ${Breakpoints.Handset} {
-        app-root-scully .desktop-menu-margin {
-          left: 0;
+        mat-sidenav-content {
+          margin-left: 0;
         }
       }`;
     
