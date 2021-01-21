@@ -48,7 +48,10 @@ import { ScullyLibModule } from '@scullyio/ng-lib';
     HomePageModule,
     AppRoutingModule,
     StripeModule.forRoot(''),
-    ScullyLibModule
+    ScullyLibModule.forRoot({
+      useTransferState: true,
+      alwaysMonitor: true
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
