@@ -2,7 +2,7 @@ import { ScullyConfig } from "@scullyio/scully";
 const { getFlashPreventionPlugin } = require('@scullyio/scully-plugin-flash-prevention');
 
 export const config:ScullyConfig = {
-  defaultPostRenderers: [getFlashPreventionPlugin()],
+  //defaultPostRenderers: [getFlashPreventionPlugin()],
   projectRoot: "./src",
   projectName: "green-client",
   outDir: './dist/static',
