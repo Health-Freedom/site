@@ -54,29 +54,30 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.articleStream$ = this.route.paramMap.pipe(
+    const stream = this.route.paramMap.pipe(
       map(params => params.get('id')),
       filter(id => !!id),
       switchMap(id => this.tss.useScullyTransferState(`article${id}`,
-        this.siteDataService.getArticle(id!)
-          .valueChanges.pipe(
-            tap(response => {
-              if (!response.loading && !response.data?.article) {
-                this.is404 = true;
-              } else {
-                this.is404 = false;
-              }
-            }),
-            map(response => response.data.article),
-            filter(article => !!article),
-            tap(article => {
-              this.article = article;
+        this.siteDataService.getArticle(id!).valueChanges)));
 
-              this.seo.setData({
-                title: article!.title ?? 'Article',
-                description: article!.summary ?? undefined
-              })
-            })))));
+    this.articleStream$ = stream.pipe(
+      tap(response => {
+        if (!response.loading && !response.data?.article) {
+          this.is404 = true;
+        } else {
+          this.is404 = false;
+        }
+      }),
+      map(response => response.data.article),
+      filter(article => !!article),
+      tap(article => {
+        this.article = article;
+
+        this.seo.setData({
+          title: article!.title ?? 'Article',
+          description: article!.summary ?? undefined
+        })
+      }));
 
     this.subscriptions.push(this.articleStream$.subscribe());
   }
