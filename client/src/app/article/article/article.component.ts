@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ScullyRoutesService, TransferStateService } from '@scullyio/ng-lib';
 import { SeoSocialShareService } from 'ngx-seo';
-import { Observable, Subscription } from 'rxjs';
+import { defer, Observable, Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { SiteDataService } from 'src/app/site-data.service';
 import { getArticle_article } from 'src/grapqlTypes/getArticle';
@@ -58,7 +58,7 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
       map(params => params.get('id')),
       filter(id => !!id),
       switchMap(id => this.tss.useScullyTransferState(`article${id}`,
-        this.siteDataService.getArticle(id!).valueChanges)));
+        defer(() => this.siteDataService.getArticle(id!).valueChanges))));
 
     this.articleStream$ = stream.pipe(
       tap(response => {
