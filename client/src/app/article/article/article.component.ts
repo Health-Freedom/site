@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, SecurityContext, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { ScullyRoutesService, TransferStateService } from '@scullyio/ng-lib';
+import { TransferStateService } from '@scullyio/ng-lib';
 import { SeoSocialShareService } from 'ngx-seo';
 import { defer, Observable, Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
