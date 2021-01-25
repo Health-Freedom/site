@@ -1,27 +1,22 @@
-import { NgModule } from '@angular/core';
+import { NgModule, PLATFORM_ID } from '@angular/core';
 import { APOLLO_OPTIONS } from 'apollo-angular';
 import { ApolloClientOptions, ApolloLink, createHttpLink, InMemoryCache } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
 import { createPersistedQueryLink } from 'apollo-link-persisted-queries';
 import { environment } from './../environments/environment';
+import { isPlatformServer } from '@angular/common';
 
 const uri = `${environment.apiURL}/graphql`;
 
-export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
-  const link = ApolloLink.from([
-    createPersistedQueryLink({ useGETForHashedQueries: true }) as any,
-    createHttpLink({ uri })
-  ]);
-
-  const persisted = createPersistedQueryLink();
-  const http = httpLink.create({
-    uri,
-  });
-
-  const angularLink = persisted.concat(http as any);
+export function createApollo(angularLink: HttpLink, platformId:any): ApolloClientOptions<any> {
+  const isSSr = isPlatformServer(platformId);
 
   return {
-    link: link,
+    ssrMode: isSSr,
+    link: isSSr ? angularLink.create({uri}) : ApolloLink.from([
+      createPersistedQueryLink({ useGETForHashedQueries: true }) as any,
+      createHttpLink({ uri })
+    ]),
     cache: new InMemoryCache(),
     defaultOptions: {
       watchQuery: {
@@ -36,7 +31,7 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
     {
       provide: APOLLO_OPTIONS,
       useFactory: createApollo,
-      deps: [HttpLink]
+      deps: [HttpLink, PLATFORM_ID]
     },
   ],
 })

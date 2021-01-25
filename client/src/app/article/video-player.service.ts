@@ -1,4 +1,4 @@
-import { Injectable, OnInit, SecurityContext } from '@angular/core';
+import { Injectable, OnInit, Renderer2, RendererFactory2, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ScriptService } from 'ngx-script-loader';
 import { BehaviorSubject } from 'rxjs';
@@ -8,8 +8,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class VideoPlayerService {
 
-  constructor(private scriptService: ScriptService, private sanitizer: DomSanitizer) {
-    this.rumbleElement = document.createElement('div');
+  constructor(private scriptService: ScriptService, private sanitizer: DomSanitizer, factory:RendererFactory2) {
+    this.rumbleElement = factory.createRenderer(null, null).createElement('div');
     this.rumbleElement.id = 'rumblePlayer';
   }
 
