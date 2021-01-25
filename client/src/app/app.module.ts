@@ -21,7 +21,6 @@ import { HomePageModule } from './home-page/home-page.module';
 import { DonateModule } from './donate/donate.module';
 import { StripeModule } from 'stripe-angular';
 import { ExemptionFormModule } from './exemption-form/exemption-form.module';
-import { ScullyLibModule } from '@scullyio/ng-lib';
 
 @NgModule({
   declarations: [
@@ -47,8 +46,7 @@ import { ScullyLibModule } from '@scullyio/ng-lib';
     ExemptionFormModule,
     HomePageModule,
     AppRoutingModule,
-    StripeModule.forRoot(''),
-    ScullyLibModule
+    StripeModule.forRoot('')
   ],
   providers: [],
   bootstrap: [AppComponent]

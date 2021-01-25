@@ -8,11 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "gentypes": "apollo client:codegen --target typescript --outputFlat  src/grapqlTypes",
-    "scully": "scully",
-    "scully:serve": "scully serve",
-    "jam": "ng build && yarn scully",
-    "jam-prod": "ng build --prod && yarn scully"
+    "gentypes": "apollo client:codegen --target typescript --outputFlat  src/grapqlTypes"
   },
   "private": true,
   "dependencies": {
@@ -27,9 +23,6 @@
     "@angular/platform-browser-dynamic": "~11.0.4",
     "@angular/router": "~11.0.4",
     "@apollo/client": "^3.0.0",
-    "@scullyio/init": "^1.0.1",
-    "@scullyio/ng-lib": "^1.0.0",
-    "@scullyio/scully": "^1.0.0",
     "@types/stripe-v3": "^3.1.23",
     "apollo-angular": "^2.1.0",
     "apollo-link-persisted-queries": "^0.2.2",
