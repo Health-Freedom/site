@@ -29,7 +29,7 @@ import { ExemptionFormModule } from './exemption-form/exemption-form.module';
     InvalidRouteComponent,
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BrowserAnimationsModule,
     GraphQLModule,
     MarkdownModule.forRoot(),
