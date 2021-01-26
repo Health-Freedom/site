@@ -22,12 +22,7 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
 
   return {
     link: link,
-    cache: new InMemoryCache(),
-    defaultOptions: {
-      watchQuery: {
-        notifyOnNetworkStatusChange: true
-      }
-    }
+    cache: new InMemoryCache()
   };
 }
 

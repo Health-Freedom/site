@@ -58,14 +58,11 @@ export class ArticleComponent implements OnInit, OnDestroy, AfterViewInit {
       map(params => params.get('id')),
       filter(id => !!id),
       switchMap(id => this.tss.useScullyTransferState(`article${id}`,
-        defer(() => this.siteDataService.getArticle(id!).valueChanges
-          .pipe(
-            filter(response => !response.loading)
-          )))));
+        defer(() => this.siteDataService.getArticle(id!).valueChanges))));
 
     this.articleStream$ = stream.pipe(
       tap(response => {
-        if (!response.data?.article) {
+        if (!response.loading && !response.data?.article) {
           this.is404 = true;
         } else {
           this.is404 = false;
