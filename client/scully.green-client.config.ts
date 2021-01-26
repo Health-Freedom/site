@@ -1,4 +1,23 @@
 import { ScullyConfig } from '@scullyio/scully';
+import { gql } from 'apollo-angular';
+
+const articleQuery = gql`
+query articleRouteData {
+  articles {
+    id
+    title
+  }
+}
+`;
+
+const categoriesQuery = gql`
+query categoriesRouteData {
+  categories {
+    id
+    title
+  }
+}`;
+
 export const config: ScullyConfig = {
   projectRoot: "./src",
   projectName: "green-client",
@@ -7,7 +26,7 @@ export const config: ScullyConfig = {
     '/article/:id': {
       type: "json",
       id: {
-        url: 'https://strapi.yrtestingdomainfor.info/graphql?query=query%20%0A%7B%0A%20%20articles%20%7B%0A%20%20%20%20id%0A%20%20%20%20title%0A%20%20%7D%0A%7D',
+        url: `https://strapi.yrtestingdomainfor.info/graphql?query=${encodeURIComponent(articleQuery.loc?.source.body ?? '')}`,
         property: 'id',
         resultsHandler: (response:any) => response.data.articles
       }
@@ -15,7 +34,7 @@ export const config: ScullyConfig = {
     '/category/:id': {
       type: 'json',
       id: {
-        url: 'https://strapi.yrtestingdomainfor.info/graphql?query=query%20%0A%7B%0A%20%20categories%20%7B%0A%20%20%20%20id%0A%20%20%20%20title%0A%20%20%7D%0A%7D',
+        url: `https://strapi.yrtestingdomainfor.info/graphql?query=${encodeURIComponent(categoriesQuery.loc?.source.body ?? '')}`,
         property: 'id',
         resultsHandler: (response:any) => response.data.categories
       }
